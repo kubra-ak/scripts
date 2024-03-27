@@ -1,0 +1,25 @@
+/* Formatted on 27/03/2024 10:12:10 (QP5 v5.269.14213.34769) */
+SELECT inst_id,
+       (SELECT username
+          FROM dba_users
+         WHERE user_id = s.parsing_user_id AND ROWNUM < 2)
+          AS username,
+       SQL_PLAN_BASELINE,
+       sql_fulltext,
+       sql_profile,
+       TRUNC (elapsed_time / DECODE (executions, 0, 1, executions) / 1000000,
+              2)
+          elapsed_time,
+       plan_hash_value,
+       hash_value,
+       child_number,
+       first_load_time,
+       last_load_time,
+       executions,
+       buffer_gets,
+       TRUNC (buffer_gets / DECODE (executions, 0, 1, executions))
+          gets_per_exec,
+       TRUNC (rows_processed / DECODE (executions, 0, 1, executions))
+          rows_return_per_exec
+  FROM gv$sql s
+ WHERE sql_id = '0y3fa4v8wgrhk';
